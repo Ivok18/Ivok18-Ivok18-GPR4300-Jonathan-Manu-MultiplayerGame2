@@ -1,50 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
-    public static GameManager instance;
-    [HideInInspector] public GameObject LocalPlayer;
-    public float timerAmount = 2f;
-    private bool runSpawnTimer = true;
-
-    private void Awake()
+    public float nbOfPlayersLeft;
+   
+    public void AddPlayerToParty()
     {
-        instance = this;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        nbOfPlayersLeft++;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckWin()
     {
-        if(runSpawnTimer)
+        nbOfPlayersLeft--;
+        if(nbOfPlayersLeft <= 1 && GameObject.Find("DressManager").GetComponent<DressManager>().forbiddenColors.Count > 1)
         {
-            StartRespawn();
+            SceneManager.LoadScene("Winner Scene");
         }
     }
-
-
-    public void EnableRespawn()
-    {
-        timerAmount = 5f;
-        runSpawnTimer = true;
-
-    }
-
-    public void StartRespawn()
-    {
-        timerAmount -= Time.deltaTime;
-
-        if(timerAmount <= 0)
-        {
-            runSpawnTimer = false;  
-        }
-
-    }
+  
 }
